@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Videojuego;
 use App\Http\Requests\CreateVideojuegoRequest;
+use Illuminate\Support\Facades\Storage;
 
 class VideojuegoController extends Controller
 {
@@ -28,19 +29,11 @@ class VideojuegoController extends Controller
 
     public function store(CreateVideojuegoRequest $request)
     {
-        request()->validate([
-            'nombre'=>'required',
-            'consola'=>'required',
-            'precio_adquisicion'=>'required'
-        ]);
-        Videojuego::create([
-            'imagen'=> request('imagen')->file('imagen')->store('imagenes','public'),
-            'videojuego_nombre' => request('nombre'),
-            'videojuego_categoria' => request('clasificacion'),
-            'videojuego_consola'=> request('consola'),
-            'videojuego_precio_adquisicion' => request('precio_adquisicion'),
-            'videojuego_precio_venta'=> (request('precio_adquisicion')*1.4)
-        ]);
+        $videojuego = new Videojuego($request->validated());
+        $videojuego->videojuego_clasificacion= request('videojuego_clasificacion');
+        $videojuego->imagen = $request->file('imagen')->store('imagenes','public');
+        $videojuego->videojuego_precio_venta= $request->videojuego_precio_adquisicion * 1.4;
+        $videojuego->save();
          
         return redirect()->route('videojuego.create')->with('registrar', 'completado');
 
@@ -60,26 +53,22 @@ class VideojuegoController extends Controller
 
     }
 
-    public function update(Videojuego $videojuego){
-        request()->validate([
-            'nombre'=>'required',
-            'clasificacion'=> 'required',
-            'consola'=>'required',
-            'precio_adquisicion'=>'required',
-            'precio_venta'=> 'required'
-        ]);
-        $videojuego->update([
-            'videojuego_nombre'=> request('nombre'),
-            'videojuego_categoria' => request('clasificacion'),
-            'videojuego_consola'=> request('consola'),
-            'videojuego_precio_adquisicion'=> request('precio_adquisicion'),
-            'videojuego_precio_venta'=> request('precio_venta')
-        ]);
+    public function update(Videojuego $videojuego, CreateVideojuegoRequest $request){
+        if($request->hasFile('imagen')){
+            Storage::delete($videojuego->imagen);
+            $videojuego->fill($request->validated());
+            $videojuego->videojuego_clasificacion= request('videojuego_clasificacion');
+            $videojuego->imagen = $request->file('imagen')->store('imagenes','public');
+            $videojuego->videojuego_precio_venta= request('videojuego_precio_venta');
+        }else{
+            $videojuego->update(array_filter($request->validated()));
+        }
 
         return redirect()->route('videojuego.show', $videojuego)->with('editar', 'completado');
     }
 
     public function destroy(Videojuego $videojuego){
+        Storage::delete($videojuego->imagen);
         $videojuego->delete();
 
         return redirect()->route('videojuego.index')->with('eliminar', 'completado');

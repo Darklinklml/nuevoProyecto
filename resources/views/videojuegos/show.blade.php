@@ -9,6 +9,7 @@
 	<table class="table table-bordered" name='tabla_videojuegos' id='tabla_videojuegos'>
 		<tr>
 			<td><label>Id</label></td>
+			<td><label>Portada</label></td>
 			<td><label>Nombre Videojuego</label></td>
 			<td><label>Categoria</label></td>
 			<td><label>Consola</label></td>
@@ -21,13 +22,16 @@
 		</tr>
 		<tr>
 			<td>{{$videojuego->id}}</td>
+			@if($videojuego->imagen)
+			<td><div align="center"><img src="/storage/{{$videojuego->imagen}}" width="150px" height="100px"></div></td>
+			@endif
 			<td >{{$videojuego->videojuego_nombre}}</td>
-			<td>{{$videojuego->videojuego_categoria}}</td>
+			<td>{{$videojuego->videojuego_clasificacion}}</td>
 			<td>{{$videojuego->videojuego_consola}}</td>
 			<td>${{$videojuego->videojuego_precio_adquisicion}}</td>
 			<td>${{$videojuego->videojuego_precio_venta}}</td>
 			@auth
-				<td><a class="btn btn-primary" href="{{route('videojuego.editar', $videojuego)}}">Editar</a></td>
+				<td><a class="btn btn-primary text-white" href="{{route('videojuego.editar', $videojuego)}}">Editar</a></td>
 				<td><form action="{{ route('videojuego.destroy', $videojuego)}}" class="formulario-borrar" method='POST' >
 					@csrf @method('DELETE')
 					<button type="submit" class="btn btn-danger">Eliminar</button>
@@ -36,7 +40,7 @@
 		</tr>
 		
 	</table>
-	<a class="btn btn-primary" href="{{route('videojuego.index')}}">Regresar</a>
+	<a class="btn btn-primary text-white" href="{{route('videojuego.index')}}">Regresar</a>
 </div>
 @endsection
 @section('js')
@@ -44,19 +48,19 @@
 		$(".formulario-borrar").submit(function(event){
 			event.preventDefault();
 
-			// Swal.fire({
-			//   title: '¿Estás seguro?',
-			//   text: "No podrás deshacer la acción al confirmar",
-			//   icon: 'warning',
-			//   showCancelButton: true,
-			//   confirmButtonColor: '#3085d6',
-			//   cancelButtonColor: '#d33',
-			//   confirmButtonText: 'Acepto, borrar'
-			// }).then((result) => {
-			//   if (result.isConfirmed) {
-			//   	this.submit();
-			//   }
-			// });
+			Swal.fire({
+			  title: '¿Estás seguro?',
+			  text: "No podrás deshacer la acción al confirmar",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Acepto, borrar'
+			}).then((result) => {
+			  if (result.isConfirmed) {
+			  	this.submit();
+			  }
+			});
 		});
 
 	</script>

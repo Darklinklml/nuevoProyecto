@@ -24,9 +24,11 @@ class CreateVideojuegoRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre'=>'required',
-            'consola'=>'required',
-            'precio_adquisicion'=>'required'
+            'videojuego_nombre'=>'required',
+            'videojuego_consola'=>'required',
+            'videojuego_precio_adquisicion'=>'required',
+            'imagen'=> [$this->route('videojuego') ? 'nullable' : 'required','image'],
+            'videojuego_precio_venta'=> [$this->route('videojuego') ? 'required' : 'nullable']
         ];
     }
 }
