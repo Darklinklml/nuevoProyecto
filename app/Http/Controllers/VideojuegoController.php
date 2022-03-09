@@ -26,7 +26,7 @@ class VideojuegoController extends Controller
         ]);
     }
 
-    public function store()
+    public function store(CreateVideojuegoRequest $request)
     {
         request()->validate([
             'nombre'=>'required',
@@ -34,6 +34,7 @@ class VideojuegoController extends Controller
             'precio_adquisicion'=>'required'
         ]);
         Videojuego::create([
+            'imagen'=> request('imagen')->file('imagen')->store('imagenes','public'),
             'videojuego_nombre' => request('nombre'),
             'videojuego_categoria' => request('clasificacion'),
             'videojuego_consola'=> request('consola'),
@@ -41,7 +42,7 @@ class VideojuegoController extends Controller
             'videojuego_precio_venta'=> (request('precio_adquisicion')*1.4)
         ]);
          
-        return redirect()->route('videojuego.create')->with('status', 'El videojuego '.request('nombre').' fue creado exitosamente.');
+        return redirect()->route('videojuego.create')->with('registrar', 'completado');
 
     }
 
@@ -75,12 +76,12 @@ class VideojuegoController extends Controller
             'videojuego_precio_venta'=> request('precio_venta')
         ]);
 
-        return redirect()->route('videojuego.show', $videojuego)->with('status', 'El videojuego '.request('nombre').' fue modificado exitosamente.');
+        return redirect()->route('videojuego.show', $videojuego)->with('editar', 'completado');
     }
 
     public function destroy(Videojuego $videojuego){
         $videojuego->delete();
 
-        return redirect()->route('videojuego.index')->with('status', 'El videojuego fue eliminado exitosamente.');
+        return redirect()->route('videojuego.index')->with('eliminar', 'completado');
     }
 }

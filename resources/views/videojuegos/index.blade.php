@@ -22,11 +22,13 @@
 				<td>{{$videojuegoItem->videojuego_consola}}</td>
 				<td>${{$videojuegoItem->videojuego_precio_adquisicion}}</td>
 				<td>${{$videojuegoItem->videojuego_precio_venta}}</td>
-				<td><a href="{{route('videojuego.show', $videojuegoItem)}}">Ver</a></td>							
+				<td><a class="btn btn-primary" href="{{route('videojuego.show', $videojuegoItem)}}">Ver</a></td>							
 			</tr>
 		@empty
 			<label>No se encontraron registros en la base de datos.</label>
 		@endforelse
 	</table>
+
 </div>
 @endsection
+

@@ -27,14 +27,37 @@
 			<td>${{$videojuego->videojuego_precio_adquisicion}}</td>
 			<td>${{$videojuego->videojuego_precio_venta}}</td>
 			@auth
-				<td><a href="{{route('videojuego.editar', $videojuego)}}">Editar</a></td>
-				<td><form  method='POST' action="{{ route('videojuego.destroy', $videojuego)}}">
+				<td><a class="btn btn-primary" href="{{route('videojuego.editar', $videojuego)}}">Editar</a></td>
+				<td><form action="{{ route('videojuego.destroy', $videojuego)}}" class="formulario-borrar" method='POST' >
 					@csrf @method('DELETE')
-					<button class="btn btn-primary">Eliminar</button>
+					<button type="submit" class="btn btn-danger">Eliminar</button>
 				</form></td>
 			@endauth							
 		</tr>
 		
 	</table>
+	<a class="btn btn-primary" href="{{route('videojuego.index')}}">Regresar</a>
 </div>
+@endsection
+@section('js')
+	<script>
+		$(".formulario-borrar").submit(function(event){
+			event.preventDefault();
+
+			// Swal.fire({
+			//   title: '¿Estás seguro?',
+			//   text: "No podrás deshacer la acción al confirmar",
+			//   icon: 'warning',
+			//   showCancelButton: true,
+			//   confirmButtonColor: '#3085d6',
+			//   cancelButtonColor: '#d33',
+			//   confirmButtonText: 'Acepto, borrar'
+			// }).then((result) => {
+			//   if (result.isConfirmed) {
+			//   	this.submit();
+			//   }
+			// });
+		});
+
+	</script>
 @endsection

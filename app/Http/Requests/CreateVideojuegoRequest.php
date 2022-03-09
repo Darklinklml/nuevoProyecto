@@ -24,10 +24,9 @@ class CreateVideojuegoRequest extends FormRequest
     public function rules()
     {
         return [
-            
             'nombre'=>'required',
             'consola'=>'required',
-            'precio'=>'required'
+            'precio_adquisicion'=>'required'
         ];
     }
 }

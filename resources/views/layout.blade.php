@@ -6,6 +6,9 @@
 	<title>Home</title>
 	<link rel="stylesheet" type="text/css" href="{{mix('css/app.css')}}">
 	<script type="text/javascript" src="{{mix('js/app.js')}}"></script>
+	<script src="sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="sweetalert2.min.css">
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 	<div id="app" class="d-flex flex-column h-screen justify-content-between">
@@ -16,6 +19,7 @@
 
 		<main>
 			@yield('content')
+			@yield('js')
 		</main>
 
 		<footer class="bg-white text-center text-black-60 py-3 shadow">
